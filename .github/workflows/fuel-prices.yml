@@ -8,11 +8,12 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "data/prices.json"
       - "scripts/update_data.py"
       - ".github/workflows/fuel-prices.yml"
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -32,16 +33,6 @@ jobs:
 
       - name: Refresh official UK data
         run: python scripts/update_data.py
-
-      - name: Commit updated data when changed
-        run: |
-          if ! git diff --quiet -- data/prices.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/prices.json
-            git commit -m "Refresh official UK fuel price data"
-            git push
-          fi
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
