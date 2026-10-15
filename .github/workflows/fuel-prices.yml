@@ -10,7 +10,6 @@ on:
       - "index.html"
       - "scripts/update_data.py"
       - ".github/workflows/fuel-prices.yml"
-      - "data/prices.json"
 
 permissions:
   contents: write
