@@ -128,7 +128,7 @@ if eu_raw[:2] == b"PK":
         if not csv_members:
             raise RuntimeError("EU ZIP download contains no CSV file")
         eu_text = archive.read(csv_members[0]).decode("utf-8-sig")
-elif eu_raw[:2] == b"\\x1f\\x8b":
+elif eu_raw[:2] == bytes([31, 139]):
     eu_text = gzip.decompress(eu_raw).decode("utf-8-sig")
 else:
     eu_text = eu_raw.decode("utf-8-sig", errors="replace")
