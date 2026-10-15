@@ -122,7 +122,13 @@ elif not eu_csv_url.startswith("http"):
     eu_csv_url = "https://www.fuel-prices.eu/" + eu_csv_url.lstrip("/")
 
 eu_raw = fetch(eu_csv_url)
-if eu_raw[:2] == b"\x1f\x8b":
+if eu_raw[:2] == b"PK":
+    with zipfile.ZipFile(io.BytesIO(eu_raw)) as archive:
+        csv_members = [name for name in archive.namelist() if name.lower().endswith(".csv")]
+        if not csv_members:
+            raise RuntimeError("EU ZIP download contains no CSV file")
+        eu_text = archive.read(csv_members[0]).decode("utf-8-sig")
+elif eu_raw[:2] == b"\\x1f\\x8b":
     eu_text = gzip.decompress(eu_raw).decode("utf-8-sig")
 else:
     eu_text = eu_raw.decode("utf-8-sig", errors="replace")
