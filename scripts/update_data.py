@@ -6,6 +6,7 @@ import io
 import json
 import re
 import urllib.request
+import zipfile
 from datetime import datetime, date, timezone
 from html import unescape
 from html.parser import HTMLParser
